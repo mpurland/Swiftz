@@ -6,28 +6,42 @@
 //  Copyright (c) 2014 Maxwell Swadling. All rights reserved.
 //
 
-
-/// Numeric types.
-public protocol NumericType : Comparable {
+/// Types for algebraic data types.
+public protocol Magnitudeable {
 	/// The null quantity.
 	static var zero : Self { get }
 	/// The singular quantity.
 	static var one : Self { get }
-
+	
 	/// The magnitude of the quantity.
 	var signum : Self { get }
+}
+
+public protocol Negatable {
 	/// A quantity with the opposing magnitude of the receiver.
 	var negate : Self { get }
+}
 
+public protocol Addable {
 	/// The quantity produced by adding the given quantity to the receiver.
 	func plus(_ : Self) -> Self
+}
+
+public protocol Subtractable {
 	/// The quantity produced by subtracting the given quantity from the receiver.
 	func minus(_ : Self) -> Self
+}
+
+public protocol Multipliable {
 	/// The quantity produced by multiplying the receiver by the given quantity.
 	func times(_ : Self) -> Self
 }
 
-extension NumericType {
+/// Numeric types.
+public protocol NumericType : Comparable, Magnitudeable, Negatable, Addable, Subtractable, Multipliable {
+}
+
+extension Magnitudeable where Self: Equatable, Self: Comparable, Self: Negatable {
 	public var signum : Self {
 		if self == Self.zero {
 			return Self.zero
